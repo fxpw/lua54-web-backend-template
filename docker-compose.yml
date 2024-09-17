@@ -1,7 +1,7 @@
 services:
 
-  lua54-web-backend-template-db:
-    container_name: lua54-web-backend-template-db
+  postgres_template_db:
+    container_name: postgres_template_db
     image: postgres:latest
     environment:
       - 'POSTGRES_DB=${DB_DATABASE:-db_name}'
@@ -10,7 +10,7 @@ services:
     ports:
       - '${FORWARD_DB_PORT:-5432}:5432'
     volumes:
-      - lua54_web_backend_template_db_local:/var/lib/postgresql/data
+      - postgres_template_db_local:/var/lib/postgresql/data
 
   lua54-web-backend-template:
     container_name: lua54-web-backend-template
@@ -19,7 +19,7 @@ services:
     ports:
       - '${BACKEND_PORT:-5000}:5000'
     depends_on:
-      - lua54-web-backend-template-db
+      - postgres_template_db
     environment:
       - 'APP_ENV=${APP_ENV:-development}'
       - 'BACKEND_PORT=${BACKEND_PORT:-5000}'
@@ -28,5 +28,5 @@ services:
     volumes:
       - .:/app
 volumes:
-  lua54_web_backend_template_db_local:
+  postgres_template_db_local:
     driver: local
